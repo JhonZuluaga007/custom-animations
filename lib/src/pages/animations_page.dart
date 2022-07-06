@@ -37,7 +37,15 @@ class _SquareAnimationState extends State<SquareAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return _Rectangulo();
+    // Play / Reproduction
+    animationController.forward();
+    return AnimatedBuilder(
+      animation: animationController,
+      //child: _Rectangulo(),
+      builder: (context, child) {
+        return Transform.rotate(angle: rotation.value, child: _Rectangulo());
+      },
+    );
   }
 }
 
