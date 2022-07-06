@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 class AnimationsPage extends StatelessWidget {
   const AnimationsPage({Key? key}) : super(key: key);
@@ -27,13 +27,16 @@ class _SquareAnimationState extends State<SquareAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> rotation;
+  late Animation<double> opacity;
 
   @override
   void initState() {
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 4000));
-    rotation = Tween(begin: 0.0, end: 2 * Math.pi).animate(
+    rotation = Tween(begin: 0.0, end: 2 * math.pi).animate(
         CurvedAnimation(parent: animationController, curve: Curves.bounceOut));
+
+    opacity = Tween(begin: 0.1, end: 1.0).animate(animationController);
 
     animationController.addListener(() {
       print('Status: ${animationController.status}');
@@ -50,9 +53,14 @@ class _SquareAnimationState extends State<SquareAnimation>
     animationController.forward();
     return AnimatedBuilder(
       animation: animationController,
-      //child: _Rectangulo(),
-      builder: (context, child) {
-        return Transform.rotate(angle: rotation.value, child: _Rectangulo());
+      child: _Rectangulo(),
+      builder: (context, childRectangulo) {
+        return Transform.rotate(
+            angle: rotation.value,
+            child: Opacity(
+              opacity: opacity.value,
+              child: childRectangulo,
+            ));
       },
     );
   }
