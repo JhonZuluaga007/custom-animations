@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:custom_animations/src/pages/headers_page.dart';
+import 'package:custom_animations/src/pages/animations_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HeadersPage(),
+      //home: const HeadersPage(),
+      home: const AnimationsPage(),
     );
   }
 }
