@@ -32,12 +32,13 @@ class _SquareAnimationState extends State<SquareAnimation>
   void initState() {
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 4000));
-    rotation = Tween(begin: 0.0, end: 2 * Math.pi).animate(animationController);
+    rotation = Tween(begin: 0.0, end: 2 * Math.pi).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.bounceOut));
 
     animationController.addListener(() {
       print('Status: ${animationController.status}');
       if (animationController.status == AnimationStatus.completed) {
-        animationController.reverse();
+        animationController.reset();
       }
     });
     super.initState();
