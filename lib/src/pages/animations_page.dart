@@ -27,7 +27,12 @@ class _SquareAnimationState extends State<SquareAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> rotation;
+
   late Animation<double> opacity;
+  late Animation<double> opacityOut;
+
+  late Animation<double> moveRight;
+  late Animation<double> enlarge;
 
   @override
   void initState() {
@@ -40,12 +45,27 @@ class _SquareAnimationState extends State<SquareAnimation>
         parent: animationController,
         curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
 
+    opacityOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.75, 1.0, curve: Curves.easeInOut)));
+
+    moveRight = Tween(begin: 0.0, end: 200.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
+
+    enlarge = Tween(begin: 0.0, end: 2.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
+
     animationController.addListener(() {
       print('Status: ${animationController.status}');
       if (animationController.status == AnimationStatus.completed) {
-        animationController.reset();
+        animationController.repeat();
+        //animationController.reverse();
+        //animationController.reset();
       }
     });
+
     super.initState();
   }
 
@@ -57,12 +77,16 @@ class _SquareAnimationState extends State<SquareAnimation>
       animation: animationController,
       child: _Rectangulo(),
       builder: (context, childRectangulo) {
-        return Transform.rotate(
-            angle: rotation.value,
-            child: Opacity(
-              opacity: opacity.value,
-              child: childRectangulo,
-            ));
+        return Transform.translate(
+          offset: Offset(moveRight.value, 0),
+          child: Transform.rotate(
+              angle: rotation.value,
+              child: Opacity(
+                opacity: opacity.value - opacityOut.value,
+                child: Transform.scale(
+                    scale: enlarge.value, child: childRectangulo),
+              )),
+        );
       },
     );
   }
@@ -74,7 +98,7 @@ class _Rectangulo extends StatelessWidget {
     return Container(
       width: 70,
       height: 70,
-      decoration: BoxDecoration(color: Colors.blue),
+      decoration: const BoxDecoration(color: Colors.blue),
     );
   }
 }
