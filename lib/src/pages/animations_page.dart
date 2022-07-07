@@ -27,7 +27,10 @@ class _SquareAnimationState extends State<SquareAnimation>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> rotation;
+
   late Animation<double> opacity;
+  late Animation<double> opacityOut;
+
   late Animation<double> moveRight;
   late Animation<double> enlarge;
 
@@ -41,6 +44,10 @@ class _SquareAnimationState extends State<SquareAnimation>
     opacity = Tween(begin: 0.1, end: 1.0).animate(CurvedAnimation(
         parent: animationController,
         curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
+
+    opacityOut = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.75, 1.0, curve: Curves.easeInOut)));
 
     moveRight = Tween(begin: 0.0, end: 200.0).animate(CurvedAnimation(
         parent: animationController,
@@ -75,7 +82,7 @@ class _SquareAnimationState extends State<SquareAnimation>
           child: Transform.rotate(
               angle: rotation.value,
               child: Opacity(
-                opacity: opacity.value,
+                opacity: opacity.value - opacityOut.value,
                 child: Transform.scale(
                     scale: enlarge.value, child: childRectangulo),
               )),
