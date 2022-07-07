@@ -28,6 +28,7 @@ class _SquareAnimationState extends State<SquareAnimation>
   late AnimationController animationController;
   late Animation<double> rotation;
   late Animation<double> opacity;
+  late Animation<double> moveRight;
 
   @override
   void initState() {
@@ -40,12 +41,17 @@ class _SquareAnimationState extends State<SquareAnimation>
         parent: animationController,
         curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
 
+    moveRight = Tween(begin: 0.0, end: 200.0).animate(CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.0, 0.25, curve: Curves.easeInOut)));
+
     animationController.addListener(() {
       print('Status: ${animationController.status}');
       if (animationController.status == AnimationStatus.completed) {
         animationController.reset();
       }
     });
+
     super.initState();
   }
 
@@ -57,12 +63,15 @@ class _SquareAnimationState extends State<SquareAnimation>
       animation: animationController,
       child: _Rectangulo(),
       builder: (context, childRectangulo) {
-        return Transform.rotate(
-            angle: rotation.value,
-            child: Opacity(
-              opacity: opacity.value,
-              child: childRectangulo,
-            ));
+        return Transform.translate(
+          offset: Offset(moveRight.value, 0),
+          child: Transform.rotate(
+              angle: rotation.value,
+              child: Opacity(
+                opacity: opacity.value,
+                child: childRectangulo,
+              )),
+        );
       },
     );
   }
@@ -74,7 +83,7 @@ class _Rectangulo extends StatelessWidget {
     return Container(
       width: 70,
       height: 70,
-      decoration: BoxDecoration(color: Colors.blue),
+      decoration: const BoxDecoration(color: Colors.blue),
     );
   }
 }
