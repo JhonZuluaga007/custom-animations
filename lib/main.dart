@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:custom_animations/src/pages/animations_page.dart';
+import 'package:custom_animations/src/challenge/animated_square_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const HeadersPage(),
-      home: const AnimationsPage(),
+      //home: const AnimationsPage(),
+      home: const AnimatedSquarePage(),
     );
   }
 }
